@@ -1,5 +1,5 @@
 #include "CSVFileWriter.h"
-//1
+//12
 bool CSVFileWriter::isCSV(const string &fileName) {
     int lastInd = fileName.size() - 1;
     if (!(fileName[lastInd] == 'v' && fileName[lastInd - 1] == 's' &&
