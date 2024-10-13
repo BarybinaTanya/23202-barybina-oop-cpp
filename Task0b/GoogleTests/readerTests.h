@@ -52,9 +52,9 @@ TEST(ReaderTest, ReadLineTest) {
     std::string rightLine = getRightLineByFileName(readerTestFiles[0]);
 
     EXPECT_EQ(lineRead, rightLine) << "Unexpected line was read";
-    if (lineRead == rightLine) {
-        std::cout << "Lines coincide. Line read: " << lineRead  << std::endl;
-    }
+//    if (lineRead == rightLine) {
+//        std::cout << "Lines coincide. Line read: " << lineRead  << std::endl;
+//    }
     readerWizard.closeFile();
 }
 
@@ -101,11 +101,6 @@ TEST(ReaderTest, AllLineasReadTest) {
 
     readerWizard.readAllLines();
     EXPECT_EQ(readerWizard.allLines.size(), 3);
-    int printIterator = 0;
-    while (printIterator < readerWizard.allLines.size()) {
-        std::cout << readerWizard.allLines[printIterator] << std::endl;
-        printIterator++;
-    }
 }
 
 TEST(ReaderTest, GetNumberLinesReadTest) {

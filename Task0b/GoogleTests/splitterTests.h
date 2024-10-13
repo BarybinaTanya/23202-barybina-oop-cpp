@@ -40,21 +40,21 @@ TEST(SpliterTests, SplitLineTest) {
     splitWizard.addDelimiter("_");
     splitWizard.addDelimiter("+++");
 
-    splitWizard.splitLine(readWizard.allLines[0], false);
+    splitWizard.splitLine(readWizard.allLines[0]);
     EXPECT_EQ(splitWizard.splittedText.size(), 6);
 
-    printSplittedText(splitWizard.splittedText);
+    //printSplittedText(splitWizard.splittedText);
 
     Reader readWizard2;
     readWizard2.openFile(splitterTestFiles[0]);
     readWizard2.readAllLines();
 
     Splitter splitWizard2;
-    splitWizard2.splitLine(readWizard2.allLines[0], false);
-    splitWizard2.splitLine(readWizard2.allLines[1], false);
+    splitWizard2.splitLine(readWizard2.allLines[0]);
+    splitWizard2.splitLine(readWizard2.allLines[1]);
     EXPECT_EQ(splitWizard2.splittedText.size(), 4);
 
-    printSplittedText(splitWizard2.splittedText);
+    //printSplittedText(splitWizard2.splittedText);
 
     readWizard.closeFile();
     readWizard2.closeFile();
@@ -66,10 +66,10 @@ TEST(SpliterTests, SplitTextTest) {
     readWizard.readAllLines();
 
     Splitter splitWizard;
-    splitWizard.splitText(readWizard.allLines, true);
+    splitWizard.splitText(readWizard.allLines);
     EXPECT_EQ(11, splitWizard.splittedText.size());
 
-    printSplittedText(splitWizard.splittedText);
+    //printSplittedText(splitWizard.splittedText);
 
     readWizard.closeFile();
 }
@@ -100,6 +100,9 @@ TEST(SpliterTests, RemoveDelimiterTest) {
 
     splitWizard.removeDelimiter("++");
     EXPECT_EQ(splitWizard.getDelimiters(), "__|**");
+
+    splitWizard.addDelimiter("\n");
+    EXPECT_EQ(splitWizard.getDelimiters(), "__|**|\\n");
 }
 
 #endif //INC_0B_SPLITTERTESTS_H

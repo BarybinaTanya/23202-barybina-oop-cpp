@@ -7,9 +7,11 @@ int WordsStatistics::getNumberWordsContained() {
 void WordsStatistics::getAllKeyWords(std::vector<string> &splittedText) {
     int iterator = 0;
     while (iterator < splittedText.size()) {
+        string lowerCaseWord = splittedText[iterator];
+        std::transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(), ::tolower);
         if (!(std::find(allKeyWordsMet.begin(), allKeyWordsMet.end(),
-                        splittedText[iterator]) != allKeyWordsMet.end())) {
-            allKeyWordsMet.push_back(splittedText[iterator]);
+                        lowerCaseWord) != allKeyWordsMet.end())) {
+            allKeyWordsMet.push_back(lowerCaseWord);
         }
         iterator++;
     }
@@ -21,7 +23,9 @@ void WordsStatistics::getFullFrequencyMap(std::vector<string> &splittedText) {
     }
     int iterator1 = 0;
     while (iterator1 < splittedText.size()) {
-        wordsFrequencyStatistics[splittedText[iterator1]].first++;
+        string lowerCaseWord = splittedText[iterator1];
+        std::transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(), ::tolower);
+        wordsFrequencyStatistics[lowerCaseWord].first++;
         numberWordsInText++;
         iterator1++;
     }

@@ -19,8 +19,8 @@ public:
     void addDelimiter(const string &delimiter);
     void removeDelimiter(const string &delimiterToDelete);
     void removeAllDelimiters();
-    void splitLine(const string &line, bool removePunctuationFlag);
-    void splitText(std::vector<string> &allLines, bool removePunctuationFlag);
+    void splitLine(const string &line);
+    void splitText(std::vector<string> &allLines);
     string getDelimiters();
 };
 

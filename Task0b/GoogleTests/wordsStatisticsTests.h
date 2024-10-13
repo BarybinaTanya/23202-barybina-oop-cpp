@@ -25,13 +25,13 @@ TEST(WordsStatisticsTests, GetAllKeyWordsTest) {
     readWizard.readAllLines();
 
     Splitter splitWizard;
-    splitWizard.splitText(readWizard.allLines, true);
+    splitWizard.splitText(readWizard.allLines);
 
     WordsStatistics wordsStatisticsGetter;
     wordsStatisticsGetter.getAllKeyWords(splitWizard.splittedText);
 
     EXPECT_EQ(wordsStatisticsGetter.allKeyWordsMet.size(), 3);
-    printSplittedText(wordsStatisticsGetter.allKeyWordsMet);
+    //printSplittedText(wordsStatisticsGetter.allKeyWordsMet);
 }
 
 void printMap(std::map<string, std::pair<int, float>> wordsFrequencyStatistics) {
@@ -49,7 +49,7 @@ TEST(WordsStatisticsTests, GetFullWordsStatisticsTest) {
     readWizard.readAllLines();
 
     Splitter splitWizard;
-    splitWizard.splitText(readWizard.allLines, true);
+    splitWizard.splitText(readWizard.allLines);
 
     WordsStatistics wordsStatisticsGetter;
     wordsStatisticsGetter.getFullFrequencyMap(splitWizard.splittedText);
@@ -57,7 +57,7 @@ TEST(WordsStatisticsTests, GetFullWordsStatisticsTest) {
     EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[0]].first, 4);
     EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[1]].first, 4);
     EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[2]].first, 4);
-    printMap(wordsStatisticsGetter.wordsFrequencyStatistics);
+    //printMap(wordsStatisticsGetter.wordsFrequencyStatistics);
 }
 
 #endif //INC_0B_WORDSSTATISTICSTESTS_H

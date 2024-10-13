@@ -2,7 +2,7 @@
 #define notMatchRegularExpressionFlag (-1)
 
 void Splitter::setDefaultDelimiters() {
-    delimiters = " |\\n";
+    delimiters = " |\\n|!|;|\\.|:|,|\\\"|\\?";
 }
 
 void Splitter::addDelimiter(const string &delimiter) {
@@ -10,9 +10,12 @@ void Splitter::addDelimiter(const string &delimiter) {
         delimiters += '|';
     }
     for (int i = 0; i < delimiter.size(); ++i) {
-        if (delimiter[i] == '+') {
+        if (delimiter[i] == '+' || delimiter[i] == '.' || delimiter[i] == '?') {
             delimiters += "\\";
             delimiters += delimiter[i];
+        }
+        else if (delimiter[i] == '\n') {
+            delimiters += "\\n";
         }
         else {
             delimiters += delimiter[i];
@@ -30,7 +33,7 @@ string Splitter::getDelimiters() {
     return this->delimiters;
 }
 
-void Splitter::splitLine(const string &line, bool removePunctuationFlag) {
+void Splitter::splitLine(const string &line) {
     if (delimiters.empty()) {
         setDefaultDelimiters();
     }
@@ -40,47 +43,38 @@ void Splitter::splitLine(const string &line, bool removePunctuationFlag) {
     std::sregex_token_iterator emptyEndIterator;
 
     while (iterator != emptyEndIterator) {
-        this->splittedText.push_back(*iterator++);
-        if (removePunctuationFlag) {
-            if (!splittedText.empty() && (
-                    splittedText.back().front() == '(' || splittedText.back().front() == '"')) {
-                splittedText.back().erase(0, 1);
-            }
-            if (!splittedText.empty() && (
-                    splittedText.back().back() == '!' || splittedText.back().back() == '.' ||
-                    splittedText.back().back() == ';' || splittedText.back().back() == ':' ||
-                    splittedText.back().back() == ',' || splittedText.back().back() == '?' ||
-                    splittedText.back().back() == ')' || splittedText.back().back() == '"')) {
-                splittedText.back().erase(splittedText.back().size() - 1, 1);
-            }
+        if (!(*iterator).str().empty()) {
+            this->splittedText.push_back(*iterator);
         }
+        *iterator++;
     }
 }
 
-void Splitter::splitText(std::vector<string> &allLines, bool removePunctuationFlag) {
+void Splitter::splitText(std::vector<string> &allLines) {
     int iterator = 0;
     while (iterator < allLines.size()) {
-        this->splitLine(allLines[iterator], removePunctuationFlag);
+        this->splitLine(allLines[iterator]);
         iterator++;
     }
 }
 
 string getEscapedVersion(string &delimiterToDelete) {
     int it = 0;
+    string result;
     while (it < delimiterToDelete.size()) {
-        if (delimiterToDelete[it] == '+') {
-            delimiterToDelete.insert(it, "\\");
-            it += 2;
+        if (delimiterToDelete[it] == '+' || delimiterToDelete[it] == '.' || delimiterToDelete[it] == '?') {
+            result += "\\";
+            result += delimiterToDelete[it];
         }
         else if (delimiterToDelete[it] == '\n') {
-            delimiterToDelete.insert(it, "\\");
-            it += 2;
+            result += "\\n";
         }
         else {
-            it++;
+            result += delimiterToDelete[it];
         }
+        it++;
     }
-    return delimiterToDelete;
+    return result;
 }
 
 void Splitter::removeDelimiter(const string &delimiterToDelete) {

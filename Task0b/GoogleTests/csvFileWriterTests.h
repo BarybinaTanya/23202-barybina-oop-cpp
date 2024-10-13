@@ -40,7 +40,7 @@ TEST (CSVFileWriterTest, WriteFrequencyMapToCSVTest) {
     reader.closeFile();
 
     Splitter splitter;
-    splitter.splitText(reader.allLines, true);
+    splitter.splitText(reader.allLines);
 
     WordsStatistics wordsStatisticsGetter;
     wordsStatisticsGetter.getFullFrequencyMap(splitter.splittedText);
@@ -50,14 +50,12 @@ TEST (CSVFileWriterTest, WriteFrequencyMapToCSVTest) {
     fileWriter.writeFrequencyMapToCSV(wordsStatisticsGetter.wordsFrequencyStatistics);
     fileWriter.closeOutputFile();
 
-    // ----------------------------------------------------------------------------------------------
-
     Reader resultFileReader;
     resultFileReader.openFile("file_4_statistics.csv");
     resultFileReader.readLine();
     EXPECT_EQ(resultFileReader.allLines[0], "Word,Frequency,%Frequency");
     resultFileReader.readLine();
-    EXPECT_EQ(resultFileReader.allLines[1], "Everything,4,0.333333");
+    EXPECT_EQ(resultFileReader.allLines[1], "everything,4,0.333333");
 }
 
 #endif //INC_0B_CSVFILEWRITERTESTS_H
