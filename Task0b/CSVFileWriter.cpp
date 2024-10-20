@@ -11,7 +11,7 @@ bool CSVFileWriter::isCSV(const string &fileName) {
     }
 }
 
-void CSVFileWriter::openOrCreateOutputFile(const string &fileName) {
+void CSVFileWriter::openFile(const string &fileName) {
     if (!isCSV(fileName)) {
         std::cerr << "You are trying to create or open non .csv file!" << std::endl;
         return;
@@ -22,27 +22,26 @@ void CSVFileWriter::openOrCreateOutputFile(const string &fileName) {
     }
 }
 
-void CSVFileWriter::closeOutputFile() {
+std::ofstream* CSVFileWriter::getFile() {
+    if (outputFile.is_open()) {
+        return &outputFile;
+    } else {
+        return nullptr;
+    }
+}
+
+void CSVFileWriter::closeFile() {
     if (outputFile.is_open()) {
         outputFile.close();
     }
 }
 
-void CSVFileWriter::writeCSVFileHeader(const string &commaSeparatedLine) {
-    if (outputFile.is_open()) {
-        outputFile << commaSeparatedLine << std::endl;
+void CSVFileWriter::write(std::vector<string> &vector) {
+    if (!outputFile.is_open()) {
+        perror("Nowhere to write. Output file is closed.");
+        return;
     }
-}
-
-void CSVFileWriter::writeDefaultCSVFileHeader() {
-    if (outputFile.is_open()) {
-        outputFile << "Word,Frequency,%Frequency" << std::endl;
-    }
-}
-
-void CSVFileWriter::writeFrequencyMapToCSV(const std::map<string, std::pair<int, float>> &frequencyMap) {
-    writeDefaultCSVFileHeader();
-    for (const auto &it : frequencyMap) {
-        outputFile << it.first << "," << it.second.first << "," << it.second.second << std::endl;
+    for (const auto &element : vector) {
+        outputFile << element << '\n';
     }
 }

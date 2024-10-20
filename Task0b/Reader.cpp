@@ -61,18 +61,22 @@ bool Reader::hasNextLine() {
     }
 }
 
-void Reader::readAllLines() {
-    inputFile.seekg(0, std::ios::beg);
-
-    string line = this->readLine();
-    while (!line.empty()) {
-        line = this->readLine();
+std::ifstream* Reader::getFile() {
+    if (inputFile.is_open()) {
+        return &inputFile;
+    } else {
+        return nullptr;
     }
-    numberLinesRead = allLines.size();
-    inputFile.seekg(0, std::ios::beg);
+}
+
+
+std::vector<string> Reader::getAllLinesRead() const{
+    return allLines;
 }
 
 unsigned long long Reader::getNumberLinesRead() const {
     return numberLinesRead;
 }
+
+
 

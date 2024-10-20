@@ -24,38 +24,30 @@ void Splitter::addDelimiter(const string &delimiter) {
 }
 
 void Splitter::removeAllDelimiters() {
-    if (!delimiters.empty()) {
-        delimiters.clear();
-    }
+    delimiters.clear();
 }
 
 string Splitter::getDelimiters() {
     return this->delimiters;
 }
 
-void Splitter::splitLine(const string &line) {
+std::vector<string> Splitter::splitLine(const string &line) {
+    std::vector<string> splitted_line;
     if (delimiters.empty()) {
         setDefaultDelimiters();
     }
-    std::regex regularExpression(this->delimiters);
+    std::regex regularExpression(delimiters);
     std::sregex_token_iterator iterator
     (line.begin(), line.end(),regularExpression, notMatchRegularExpressionFlag);
     std::sregex_token_iterator emptyEndIterator;
 
     while (iterator != emptyEndIterator) {
         if (!(*iterator).str().empty()) {
-            this->splittedText.push_back(*iterator);
+            splitted_line.push_back(*iterator);
         }
         *iterator++;
     }
-}
-
-void Splitter::splitText(std::vector<string> &allLines) {
-    int iterator = 0;
-    while (iterator < allLines.size()) {
-        this->splitLine(allLines[iterator]);
-        iterator++;
-    }
+    return splitted_line;
 }
 
 string getEscapedVersion(string &delimiterToDelete) {
@@ -78,6 +70,9 @@ string getEscapedVersion(string &delimiterToDelete) {
 }
 
 void Splitter::removeDelimiter(const string &delimiterToDelete) {
+    if (delimiters.empty()) {
+        setDefaultDelimiters();
+    }
     string delLine = delimiterToDelete;
     delLine = getEscapedVersion(delLine);
 

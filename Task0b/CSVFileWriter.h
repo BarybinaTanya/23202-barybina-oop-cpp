@@ -11,15 +11,14 @@
 using std::string;
 
 class CSVFileWriter {
-    bool isCSV(const string &fileName);
-    void writeDefaultCSVFileHeader();
-public:
+private:
     std::ofstream outputFile;
-
-    void openOrCreateOutputFile(const string &fileName);
-    void closeOutputFile();
-    void writeCSVFileHeader(const string &commaSeparatedLine);
-    void writeFrequencyMapToCSV(const std::map<string, std::pair<int, float>> &frequencyMap);
+    static bool isCSV(const string &fileName);
+public:
+    void openFile(const string &fileName);
+    void closeFile();
+    void write(std::vector<string> &vector);
+    std::ofstream* getFile();
 };
 
 #endif //INC_0B_CSVFILEWRITER_H

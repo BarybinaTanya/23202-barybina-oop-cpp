@@ -4,35 +4,46 @@ int WordsStatistics::getNumberWordsContained() {
     return numberWordsInText;
 }
 
-void WordsStatistics::getAllKeyWords(std::vector<string> &splittedText) {
-    int iterator = 0;
-    while (iterator < splittedText.size()) {
-        string lowerCaseWord = splittedText[iterator];
-        std::transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(), ::tolower);
-        if (!(std::find(allKeyWordsMet.begin(), allKeyWordsMet.end(),
-                        lowerCaseWord) != allKeyWordsMet.end())) {
-            allKeyWordsMet.push_back(lowerCaseWord);
-        }
-        iterator++;
+std::vector<string> WordsStatistics::getStatistics() {
+    std::vector<string> result;
+    for (const auto &element : statistics) {
+        string str_push;
+        str_push.append(element.first);
+        str_push.push_back(',');
+        str_push.append(std::to_string(element.second.first));
+        str_push.push_back(',');
+        str_push.append(std::to_string(element.second.second));
+
+        result.push_back(str_push);
     }
+    return result;
 }
 
-void WordsStatistics::getFullFrequencyMap(std::vector<string> &splittedText) {
-    if (allKeyWordsMet.empty()) {
-        getAllKeyWords(splittedText);
-    }
+void WordsStatistics::addWords(std::vector<string> &splittedText) {
     int iterator1 = 0;
     while (iterator1 < splittedText.size()) {
         string lowerCaseWord = splittedText[iterator1];
-        std::transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(), ::tolower);
-        wordsFrequencyStatistics[lowerCaseWord].first++;
+        std::transform(lowerCaseWord.begin(), lowerCaseWord.end(),
+                       lowerCaseWord.begin(), ::tolower);
+        statistics[lowerCaseWord].first++;
         numberWordsInText++;
         iterator1++;
     }
-    int iterator2 = 0;
-    while (iterator2 < allKeyWordsMet.size()) {
-        wordsFrequencyStatistics[allKeyWordsMet[iterator2]].second =
-                (float)wordsFrequencyStatistics[allKeyWordsMet[iterator2]].first / (float)numberWordsInText;
-        iterator2++;
+    for (auto &element : statistics) {
+        std::pair<int, float> &stat = element.second;
+        stat.second = (float)stat.first / (float)numberWordsInText;
     }
+
+//    std::cout << "Total words: " << numberWordsInText << std::endl;
+//    for (const auto &element : statistics) {
+//        std::cout << element.first << ": " << element.second.first << ", " << element.second.second << std::endl;
+//    }
+}
+
+void WordsStatistics::addWord(const string &word_orig) {
+    string word = word_orig;
+    std::transform(word.begin(), word.end(),word.begin(), ::tolower);
+    statistics[word].first++;
+    numberWordsInText++;
+    statistics[word].second = (float)statistics[word].first / (float)numberWordsInText;
 }

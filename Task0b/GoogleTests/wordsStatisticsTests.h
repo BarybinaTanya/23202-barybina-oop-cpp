@@ -3,61 +3,25 @@
 
 #include <gtest/gtest.h>
 #include <fstream>
-#include "../Splitter.h"
-#include "../Reader.h"
 #include "../WordsStatistics.h"
 
-void createTestFileType4 (std::string newFileName) {
-    std::ofstream test_file(newFileName);
-    test_file << "Everything is fine! Everything is fine!\nEverything is fine! Everything is fine!";
-    test_file.close();
+TEST(WoersStatisticsTest, AddWordsAndGetStatisticsTest) {
+    std::vector<string> test = {"Hello", "hello", "world", "Soon", "I", "will", "die"};
+    WordsStatistics wordsStatistics;
+
+    wordsStatistics.addWords(test);
+    std::vector<string> stats = wordsStatistics.getStatistics();
+
+    EXPECT_EQ(stats[0], "die,1,0.142857");
 }
 
-TEST(WordsStatisticsTests, GetNumberWordsContainedTest) {
-    WordsStatistics wordsStatisticsGetter;
-    EXPECT_EQ(wordsStatisticsGetter.getNumberWordsContained(), 0);
-}
+TEST(WoersStatisticsTest, AddWordTest) {
+    WordsStatistics wordsStatistics;
 
-TEST(WordsStatisticsTests, GetAllKeyWordsTest) {
-    createTestFileType4(splitterTestFiles[3]);
-    Reader readWizard;
-    readWizard.openFile(splitterTestFiles[3]);
-    readWizard.readAllLines();
+    wordsStatistics.addWord("Hello");
+    std::vector<string> stats = wordsStatistics.getStatistics();
 
-    Splitter splitWizard;
-    splitWizard.splitText(readWizard.allLines);
-
-    WordsStatistics wordsStatisticsGetter;
-    wordsStatisticsGetter.getAllKeyWords(splitWizard.splittedText);
-
-    EXPECT_EQ(wordsStatisticsGetter.allKeyWordsMet.size(), 3);
-    //printSplittedText(wordsStatisticsGetter.allKeyWordsMet);
-}
-
-void printMap(std::map<string, std::pair<int, float>> wordsFrequencyStatistics) {
-    for (const auto &pair : wordsFrequencyStatistics) {
-        std::cout << pair.first << ": ("
-                  << pair.second.first << ", "
-                  << pair.second.second << ")"
-                  << std::endl;
-    }
-}
-
-TEST(WordsStatisticsTests, GetFullWordsStatisticsTest) {
-    Reader readWizard;
-    readWizard.openFile(splitterTestFiles[3]);
-    readWizard.readAllLines();
-
-    Splitter splitWizard;
-    splitWizard.splitText(readWizard.allLines);
-
-    WordsStatistics wordsStatisticsGetter;
-    wordsStatisticsGetter.getFullFrequencyMap(splitWizard.splittedText);
-
-    EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[0]].first, 4);
-    EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[1]].first, 4);
-    EXPECT_EQ(wordsStatisticsGetter.wordsFrequencyStatistics[wordsStatisticsGetter.allKeyWordsMet[2]].first, 4);
-    //printMap(wordsStatisticsGetter.wordsFrequencyStatistics);
+    EXPECT_EQ(stats[0], "hello,1,1.000000");
 }
 
 #endif //INC_0B_WORDSSTATISTICSTESTS_H

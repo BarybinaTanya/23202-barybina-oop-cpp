@@ -9,17 +9,18 @@
 using std::string;
 
 class Reader {
-    unsigned long long numberLinesRead = 0;
-public:
+private:
     std::ifstream inputFile;
     std::vector<string> allLines;
-
+    unsigned long long numberLinesRead = 0;
+public:
     void openFile(string fileName);
     void closeFile();
+    std::ifstream* getFile();
     bool isFileEmpty();
     string readLine();
     bool hasNextLine();
-    void readAllLines();
+    std::vector<string> getAllLinesRead() const;
     unsigned long long getNumberLinesRead() const;
 };
 

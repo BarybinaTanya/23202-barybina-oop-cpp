@@ -12,14 +12,14 @@
 using std::string;
 
 class WordsStatistics {
+private:
     int numberWordsInText = 0;
+    std::map<string, std::pair<int, float>> statistics;
 public:
-    std::map<string, std::pair<int, float>> wordsFrequencyStatistics;
-    std::vector<string> allKeyWordsMet;
-
+    void addWords(std::vector<string> &splittedText);
+    void addWord(const string &word_orig);
+    std::vector<string> getStatistics();
     int getNumberWordsContained();
-    void getAllKeyWords(std::vector<string> &splittedText);
-    void getFullFrequencyMap(std::vector<string> &splittedText);
 };
 
 #endif //INC_0B_WORDSSTATISTICS_H

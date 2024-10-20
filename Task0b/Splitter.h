@@ -10,17 +10,14 @@
 using std::string;
 
 class Splitter {
+private:
     string delimiters;
     void setDefaultDelimiters();
 public:
-    std::vector<string> splittedText;
-    // Words in this list can repeat.
-
     void addDelimiter(const string &delimiter);
     void removeDelimiter(const string &delimiterToDelete);
     void removeAllDelimiters();
-    void splitLine(const string &line);
-    void splitText(std::vector<string> &allLines);
+    std::vector<string> splitLine(const string &line);
     string getDelimiters();
 };
 
