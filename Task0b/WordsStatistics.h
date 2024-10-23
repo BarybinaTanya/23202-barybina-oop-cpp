@@ -18,8 +18,8 @@ private:
 public:
     void addWords(std::vector<string> &splittedText);
     void addWord(const string &word_orig);
-    std::vector<string> getStatistics();
-    int getNumberWordsContained();
+    std::vector<string> getAllWords();
+    std::pair<int, float> getStatisticsByWord(const string &word);
 };
 
 #endif //INC_0B_WORDSSTATISTICS_H

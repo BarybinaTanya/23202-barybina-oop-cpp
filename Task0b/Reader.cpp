@@ -17,24 +17,14 @@ void Reader::closeFile() {
     }
 }
 
-bool Reader::isFileEmpty() {
-    std::streampos originalPosition = inputFile.tellg();
-    inputFile.seekg(0, std::ios::end);
-    std::streampos size = inputFile.tellg();
-
-    if (size == 0) {
-        inputFile.seekg(originalPosition);
-        return true;
-    }
-    else {
-        inputFile.seekg(originalPosition);
-        return false;
-    }
+bool Reader::isFileEmpty() const {
+    return numberLinesRead == 0 && !hasNextLine();
 }
 
 string Reader::readLine() {
-    string line;
-    if (std::getline(inputFile, line)) {
+    char buff[100000];
+    if (inputFile.getline(buff, 100000, '\n')) {
+        string line(buff);
         allLines.push_back(line);
         numberLinesRead++;
         return line;
@@ -44,21 +34,8 @@ string Reader::readLine() {
     }
 }
 
-bool Reader::hasNextLine() {
-    if (this->isFileEmpty()) {
-        return false;
-    }
-    std::streampos pos = inputFile.tellg();
-    string line;
-    std::getline(inputFile, line);
-    if (!line.empty()) {
-        inputFile.seekg(pos);
-        return true;
-    }
-    else {
-        inputFile.seekg(pos);
-        return false;
-    }
+bool Reader::hasNextLine() const {
+    return !inputFile.eof();
 }
 
 std::ifstream* Reader::getFile() {

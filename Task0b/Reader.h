@@ -17,9 +17,9 @@ public:
     void openFile(string fileName);
     void closeFile();
     std::ifstream* getFile();
-    bool isFileEmpty();
+    bool isFileEmpty() const;
     string readLine();
-    bool hasNextLine();
+    bool hasNextLine() const;
     std::vector<string> getAllLinesRead() const;
     unsigned long long getNumberLinesRead() const;
 };

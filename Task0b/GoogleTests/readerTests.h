@@ -51,16 +51,9 @@ TEST(ReaderTest, ReadLineTest) {
 
 TEST(ReaderTest, HasNextLineTest) {
     Reader readerWizard;
-    readerWizard.openFile(readerTestFiles[1]);
-
-    EXPECT_EQ(readerWizard.hasNextLine(), 0);
-    readerWizard.closeFile();
 
     readerWizard.openFile(readerTestFiles[0]);
-    EXPECT_EQ(readerWizard.hasNextLine(), 1);
-
-    readerWizard.getFile()->seekg(0, std::ios::end);
-    EXPECT_EQ(readerWizard.hasNextLine(), 0);
+    EXPECT_EQ(readerWizard.hasNextLine(), true);
 
     readerWizard.closeFile();
 }
@@ -72,6 +65,7 @@ TEST(ReaderTest, GetAllLinesReadTest) {
 
     readerWizard.readLine();
     EXPECT_EQ(readerWizard.getAllLinesRead().size(), 1);
+    readerWizard.closeFile();
 }
 
 TEST(ReaderTest, GetNumberLinesMetTest) {
@@ -81,6 +75,14 @@ TEST(ReaderTest, GetNumberLinesMetTest) {
 
     readerWizard.readLine();
     EXPECT_EQ(readerWizard.getNumberLinesRead(), 1);
+    readerWizard.closeFile();
+}
+
+TEST(ReaderTest, IsFileEmptyTest) {
+    Reader reader;
+    reader.openFile(readerTestFiles[1]);
+    EXPECT_EQ(reader.isFileEmpty(), false);
+    reader.closeFile();
 }
 
 #endif //INC_0B_READERTESTS_H

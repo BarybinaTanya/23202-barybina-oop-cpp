@@ -42,6 +42,7 @@ void CSVFileWriter::write(std::vector<string> &vector) {
         return;
     }
     for (const auto &element : vector) {
-        outputFile << element << '\n';
+        outputFile << element << ',';
     }
+    outputFile << '\n';
 }
