@@ -17,7 +17,9 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(1b main.cpp
-        GoogleTests/BitArrayTests.h)
+        GoogleTests/BitArrayTests.h
+        LinkedList.cpp
+        LinkedList.h)
 
 target_link_libraries(1b GTest::gtest_main)
 

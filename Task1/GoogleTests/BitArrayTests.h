@@ -1,8 +1,9 @@
-//
-// Created by bt_06 on 25/10/2024.
-//
-
 #ifndef TASK1_BITARRAYTESTS_H
 #define TASK1_BITARRAYTESTS_H
+
+TEST (BitArrayTest, InitTest) {
+    EXPECT_EQ(1, 1);
+}
+
 
 #endif //TASK1_BITARRAYTESTS_H
