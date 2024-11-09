@@ -37,6 +37,22 @@ BitArray::BitArray(const BitArray &another_bit_array) {
     }
 }
 
+BitArray& BitArray::operator=(const BitArray &another_bit_array) {
+    if (this == &another_bit_array) {
+        return *this;
+    }
+    numberBits = another_bit_array.numberBits;
+    numberBlocks = another_bit_array.numberBlocks;
+
+    delete[] data;
+    data = new unsigned long[numberBlocks];
+
+    for (int i = 0; i < numberBlocks; ++i) {
+        data[i] = another_bit_array.data[i];
+    }
+    return *this;
+}
+
 int BitArray::getNumberBits() {
     return numberBits;
 }
