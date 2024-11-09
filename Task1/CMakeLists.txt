@@ -18,8 +18,9 @@ enable_testing()
 
 add_executable(1b main.cpp
         GoogleTests/BitArrayTests.h
-        LinkedList.cpp
-        LinkedList.h)
+        BitArray.cpp
+        BitArray.h
+)
 
 target_link_libraries(1b GTest::gtest_main)
 
