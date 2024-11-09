@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "../BitArray.h"
+#include "../BitReference.h"
 
 #define BITS_IN_BYTE 8
 
@@ -50,6 +51,43 @@ TEST(BitArrayTest, CopyOperatorTest) {
     EXPECT_EQ(array.getNumberBlocks(), 1);
 
     checkArray(array);
+}
+
+TEST(BitArrayTest, ElementValueAssignmentComplexOperatorTest) {
+    BitArray myArray(10, true);
+
+    myArray[5] = false;
+    myArray[0] = false;
+    myArray[9] = false;
+
+    int num_bits_left = myArray.getNumberBits();
+    for (int i = 0; i < myArray.getNumberBlocks(); ++i) {
+        for (int j = sizeof(unsigned long) * BITS_IN_BYTE - 1; j >= 0; --j) {
+            std::cout << 32 - j - 1 << ": " << getBit(myArray.getData()[i], j) << std::endl;
+            num_bits_left--;
+            if (num_bits_left == 0) {
+                break;
+            }
+        }
+    }
+
+    EXPECT_EQ(1, 1);
+
+    BitArray array(100, false);
+    array[5] = true;
+    array[0] = true;
+    array[67] = true;
+
+    int num_bits_left1 = array.getNumberBits();
+    for (int i = 0; i < array.getNumberBlocks(); ++i) {
+        for (int j = sizeof(unsigned long) * BITS_IN_BYTE - 1; j >= 0; --j) {
+            std::cout << "block " << i << " " << 32 - j - 1 << ": " << getBit(array.getData()[i], j) << std::endl;
+            num_bits_left1--;
+            if (num_bits_left1 == 0) {
+                break;
+            }
+        }
+    }
 }
 
 #endif //TASK1_BITARRAYTESTS_H

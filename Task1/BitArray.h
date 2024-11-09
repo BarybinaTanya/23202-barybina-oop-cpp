@@ -2,6 +2,7 @@
 #define TASK1_BITARRAY_H
 
 #include <iostream>
+#include "BitReference.h"
 
 class BitArray {
 private:
@@ -9,6 +10,8 @@ private:
     int numberBits;
     int numberBlocks;
 public:
+    friend class BitReference;
+
     explicit BitArray(int elements_num, bool value_fill_array_with);
     ~BitArray();
     BitArray(const BitArray &another_bit_array);
@@ -16,7 +19,8 @@ public:
     int getNumberBits();
     unsigned long* getData();
     int getNumberBlocks();
-
+    BitReference operator[](int index);
+    bool operator[](int index) const;
 };
 
 

@@ -20,6 +20,8 @@ add_executable(1b main.cpp
         GoogleTests/BitArrayTests.h
         BitArray.cpp
         BitArray.h
+        BitReference.cpp
+        BitReference.h
 )
 
 target_link_libraries(1b GTest::gtest_main)
