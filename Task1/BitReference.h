@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-class BitArray;
-
 class BitReference {
 private:
     unsigned long &blockRef;
@@ -12,6 +10,7 @@ private:
 public:
     BitReference(unsigned long &block_reference, int bit_index) : blockRef(block_reference), bitIndex(bit_index) {};
     BitReference& operator=(bool value);
+    operator bool() const;
 };
 
 #endif //TASK1_BITREFERENCE_H
