@@ -35,29 +35,29 @@ BitArray::BitArray (int elements_num, bool value_fill_array_with) {
     }
 }
 
-BitArray::BitArray(const BitArray &another_bit_array) {
-    numberBits = another_bit_array.numberBits;
-    numberBlocks = another_bit_array.numberBlocks;
+BitArray::BitArray(const BitArray &anotherBitArray) {
+    numberBits = anotherBitArray.numberBits;
+    numberBlocks = anotherBitArray.numberBlocks;
 
     data = new unsigned long[numberBlocks];
 
     for (int i = 0; i < numberBlocks; ++i) {
-        data[i] = another_bit_array.data[i];
+        data[i] = anotherBitArray.data[i];
     }
 }
 
-BitArray& BitArray::operator=(const BitArray &another_bit_array) {
-    if (this == &another_bit_array) {
+BitArray& BitArray::operator=(const BitArray &anotherBitArray) {
+    if (this == &anotherBitArray) {
         return *this;
     }
-    numberBits = another_bit_array.numberBits;
-    numberBlocks = another_bit_array.numberBlocks;
+    numberBits = anotherBitArray.numberBits;
+    numberBlocks = anotherBitArray.numberBlocks;
 
     delete[] data;
     data = new unsigned long[numberBlocks];
 
     for (int i = 0; i < numberBlocks; ++i) {
-        data[i] = another_bit_array.data[i];
+        data[i] = anotherBitArray.data[i];
     }
     return *this;
 }
@@ -74,7 +74,7 @@ int BitArray::getNumberBlocks() {
     return numberBlocks;
 }
 
-BitReference BitArray::operator[](int index) {
+BitReference BitArray::operator[](int index) const{
     if (index >= numberBits) {
         throw std::invalid_argument("Index is out of range");
     } // This is VERY important part of the class. It makes our bit array contain exactly numberBits elements and
@@ -164,10 +164,110 @@ void BitArray::resize(int num_bits) {
     resizeLogic(num_bits, false);
 }
 
-void BitArray::swap(BitArray& another_array) {
+void BitArray::swap(BitArray& anotherBitArray) {
     BitArray copy = *this;
-    (*this) = another_array;
-    another_array = copy;
+    (*this) = anotherBitArray;
+    anotherBitArray = copy;
 }
+
+void BitArray::clear() {
+    numberBits = 0;
+    numberBlocks = 0;
+    delete[] data;
+}
+
+void BitArray::pushBack(bool bit) {
+    this->resize(numberBits + 1, bit);
+}
+
+BitArray& BitArray::operator&=(const BitArray& anotherBitArray) {
+    if (numberBits != anotherBitArray.numberBits) {
+        perror("BitArrays have different size");
+        return *this;
+    }
+    for (int index = 0; index < numberBits; ++index) {
+        bool op_1 = (*this)[index];
+        bool op_2 = anotherBitArray[index];
+        bool res = op_1 && op_2;
+        (*this)[index] = res;
+    }
+    return *this;
+}
+
+BitArray& BitArray::operator|=(const BitArray& anotherBitArray) {
+    if (numberBits != anotherBitArray.numberBits) {
+        perror("BitArrays have different size");
+        return *this;
+    }
+    for (int index = 0; index < numberBits; ++index) {
+        bool op_1 = (*this)[index];
+        bool op_2 = anotherBitArray[index];
+        bool res = op_1 || op_2;
+        (*this)[index] = res;
+    }
+    return *this;
+}
+
+BitArray& BitArray::operator^=(const BitArray& anotherBitArray) {
+    if (numberBits != anotherBitArray.numberBits) {
+        perror("BitArrays have different size");
+        return *this;
+    }
+    for (int index = 0; index < numberBits; ++index) {
+        bool op_1 = (*this)[index];
+        bool op_2 = anotherBitArray[index];
+        bool res = op_1 ^ op_2;
+        (*this)[index] = res;
+    }
+    return *this;
+}
+
+BitArray& BitArray::operator>>=(int n) {
+    if (n <= 0) {
+        perror("Use <<= for left shift");
+        return *this;
+    }
+
+    if (n >= numberBits) {
+        for (int index = 0; index < numberBits; ++index) {
+            (*this)[index] = false;
+        }
+        return *this;
+    }
+
+    for (int index = 0; index < numberBits - n; ++index) {
+        bool rep = (*this)[index];
+        (*this)[index + n] = rep;
+    }
+    for (int index = 0; index < n - 1; ++index) {
+        (*this)[index] = false;
+    }
+    return *this;
+}
+
+BitArray& BitArray::operator<<=(int n) {
+    if (n <= 0) {
+        perror("Use >>= for right shift");
+        return *this;
+    }
+
+    if (n >= numberBits) {
+        for (int index = 0; index < numberBits; ++index) {
+            (*this)[index] = false;
+        }
+        return *this;
+    }
+
+    for (int index = n; index < numberBits; ++index) {
+        bool rep = (*this)[index];
+        (*this)[index - n] = rep;
+    }
+    for (int index = numberBits - n; index < numberBits; ++index) {
+        (*this)[index] = false;
+    }
+    return *this;
+}
+
+
 
 

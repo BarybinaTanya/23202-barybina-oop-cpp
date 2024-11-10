@@ -15,19 +15,19 @@ public:
     BitArray();
     ~BitArray();
     explicit BitArray(int elements_num, bool value_fill_array_with);
-    BitArray(const BitArray &another_bit_array);
-    void swap(BitArray& another_array);
-    BitArray& operator=(const BitArray &another_bit_array);
+    BitArray(const BitArray &anotherBitArray);
+    void swap(BitArray& anotherBitArray);
+    BitArray& operator=(const BitArray &anotherBitArray);
 
     void resize(int num_bits, bool value);
     void resize(int num_bits);
 
     void clear();
-    void push_back(bool bit);
+    void pushBack(bool bit);
 
-    BitArray& operator&=(const BitArray& b);
-    BitArray& operator|=(const BitArray& b);
-    BitArray& operator^=(const BitArray& b);
+    BitArray& operator&=(const BitArray& anotherBitArray);
+    BitArray& operator|=(const BitArray& anotherBitArray);
+    BitArray& operator^=(const BitArray& anotherBitArray);
 
     BitArray& operator<<=(int n);
     BitArray& operator>>=(int n);
@@ -51,7 +51,7 @@ public:
     int getNumberBits();
     unsigned long* getData();
     int getNumberBlocks();
-    BitReference operator[](int index);
+    BitReference operator[](int index) const;
 };
 
 bool operator==(const BitArray & a, const BitArray & b);

@@ -143,4 +143,69 @@ TEST(BitArrayTest, SwapTest) {
     (sizeof(unsigned long) * BITS_IN_BYTE));
 }
 
+TEST(BitArrayTest, PushBackTest) {
+    BitArray array(10, true);
+    array.pushBack(false);
+    array.pushBack(false);
+    //printArray(array);
+}
+
+TEST(BitArrayTest, BitANDTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    array &= array2;
+    EXPECT_EQ(array[5], false);
+    //printArray(array);
+}
+
+TEST(BitArrayTest, BitORTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    array |= array2;
+    EXPECT_EQ(array[5], true);
+    array[0] = false;
+    array2[0] = false;
+    array2 |= array;
+    EXPECT_EQ(array[0], false);
+    //printArray(array);
+}
+
+TEST(BitArrayTest, BitXORTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    array ^= array2;
+    EXPECT_EQ(array[5], true);
+    EXPECT_EQ(array[0], false);
+   //printArray(array);
+}
+
+TEST(BitArrayTest, BitRightShiftTest) {
+    BitArray array(4, true);
+    array.resize(8, false);
+    //printArray(array);
+
+    array >>= 5;
+    //printArray(array);
+    EXPECT_EQ(array[5], 1);
+    EXPECT_EQ(array[6], 1);
+    EXPECT_EQ(array[7], 1);
+}
+
+TEST(BitArrayTest, BitLeftShiftTest) {
+    BitArray array(4, false);
+    array.resize(8, true);
+    //printArray(array);
+
+    array <<= 5;
+    printArray(array);
+    EXPECT_EQ(array[0], 1);
+    EXPECT_EQ(array[1], 1);
+    EXPECT_EQ(array[2], 1);
+}
+
+
+
 #endif //TASK1_BITARRAYTESTS_H
