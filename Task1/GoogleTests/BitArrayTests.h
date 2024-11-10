@@ -182,7 +182,7 @@ TEST(BitArrayTest, BitXORTest) {
    //printArray(array);
 }
 
-TEST(BitArrayTest, BitRightShiftTest) {
+TEST(BitArrayTest, AssignBitRightShiftTest) {
     BitArray array(4, true);
     array.resize(8, false);
     //printArray(array);
@@ -194,18 +194,121 @@ TEST(BitArrayTest, BitRightShiftTest) {
     EXPECT_EQ(array[7], 1);
 }
 
-TEST(BitArrayTest, BitLeftShiftTest) {
+TEST(BitArrayTest, AssignBitLeftShiftTest) {
     BitArray array(4, false);
     array.resize(8, true);
     //printArray(array);
 
     array <<= 5;
-    printArray(array);
+    //printArray(array);
     EXPECT_EQ(array[0], 1);
     EXPECT_EQ(array[1], 1);
     EXPECT_EQ(array[2], 1);
 }
 
+TEST(BitArrayTest, BitLeftShiftTest) {
+    BitArray array(4, false);
+    array.resize(8, true);
 
+    BitArray array1 = array << 5;
+    EXPECT_EQ(array1[0], 1);
+    EXPECT_EQ(array1[1], 1);
+    EXPECT_EQ(array1[2], 1);
+}
+
+TEST(BitArrayTest, BitRightShiftTest) {
+    BitArray array(4, true);
+    array.resize(8, false);
+
+    BitArray array1 = array >> 5;
+    EXPECT_EQ(array1[5], 1);
+    EXPECT_EQ(array1[6], 1);
+    EXPECT_EQ(array1[7], 1);
+}
+
+TEST(BitArrayTest, ToStringTest) {
+    BitArray array(4, true);
+    array.resize(8, false);
+    //printArray(array);
+
+    std::string res = array.to_string();
+    std::cout << res << std::endl;
+
+    array.resize(64, true);
+    std::string res2 = array.to_string();
+    std::cout << res2 << std::endl;
+}
+
+TEST(BitArrayTest, EqualityOperatorTest) {
+    BitArray array1(65, true);
+    BitArray array2(65, true);
+    EXPECT_EQ(array1 == array2, true);
+}
+
+TEST(BitArrayTest, NonEqualityOperatorTest) {
+    BitArray array1(65, true);
+    BitArray array2(65, false);
+    EXPECT_EQ(array1 != array2, true);
+}
+
+TEST(BitArrayTest, NonAssignANDOperatorTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    BitArray result = array & array2;
+    EXPECT_EQ(result[5], false);
+}
+
+TEST(BitArrayTest, NonAssignOROperatorTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    array[0] = false;
+    array2[0] = false;
+    BitArray result = array | array2;
+    EXPECT_EQ(result[5], true);
+    EXPECT_EQ(result[0], false);
+}
+
+TEST(BitArrayTest, NonAssignXOROperatorTest) {
+    BitArray array(10, true);
+    BitArray array2(10, true);
+    array2[5] = false;
+    BitArray result = array ^ array2;
+    EXPECT_EQ(result[5], true);
+    EXPECT_EQ(result[0], false);
+}
+
+TEST(BitArrayTest, SetAllTrueTest) {
+    BitArray array(64, false);
+    array.resize(100, true);
+    std::cout << array.to_string() << std::endl;
+    array.setAllTrue();
+    std::cout << array.to_string() << std::endl;
+    EXPECT_EQ(array[63], true);
+}
+
+TEST(BitArrayTest, SetAllFalseTest) {
+    BitArray array(64, false);
+    array.resize(100, true);
+    std::cout << array.to_string() << std::endl;
+    array.setAllFalse();
+    std::cout << array.to_string() << std::endl;
+    EXPECT_EQ(array[86], false);
+}
+
+TEST(BitArrayTest, AnyTest) {
+    BitArray array(64, false);
+    EXPECT_EQ(array.any(), false);
+    array[0] = true;
+    EXPECT_EQ(array.any(), true);
+}
+
+TEST(BitArrayTest, NoneTest) {
+    BitArray array(64, false);
+    EXPECT_EQ(array.none(), true);
+    array[0] = true;
+    EXPECT_EQ(array.none(), false);
+}
 
 #endif //TASK1_BITARRAYTESTS_H

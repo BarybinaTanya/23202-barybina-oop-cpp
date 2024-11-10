@@ -268,6 +268,123 @@ BitArray& BitArray::operator<<=(int n) {
     return *this;
 }
 
+BitArray BitArray::operator<<(int n) const {
+    BitArray result = *this;
+    result <<= n;
+    return result;
+}
 
+BitArray BitArray::operator>>(int n) const {
+    BitArray result = *this;
+    result >>= n;
+    return result;
+}
 
+std::string BitArray::to_string() const {
+    std::string res;
+    for (int index = 0; index < numberBits; ++index) {
+        if ((*this)[index]) {
+            res += '1';
+        } else {
+            res += '0';
+        }
+    }
+    return res;
+}
 
+bool operator==(const BitArray &a, const BitArray &b) {
+    if (a.numberBits != b.numberBits) {
+        return false;
+    }
+
+    for (int i = 0; i < a.numberBlocks; ++i) {
+        if (a.data[i] != b.data[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool operator!=(const BitArray &a, const BitArray &b) {
+    if (a.numberBits != b.numberBits) {
+        return true;
+    }
+
+    for (int i = 0; i < a.numberBlocks; ++i) {
+        if (a.data[i] != b.data[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+BitArray operator&(const BitArray& a, const BitArray& b) {
+    if (a.numberBits != b.numberBits) {
+        perror("Arrays have different size");
+    }
+    BitArray result(a.numberBits, false);
+    for (int index = 0; index < a.numberBits; ++index) {
+        bool res_1 = a[index];
+        bool res_2 = b[index];
+        result[index] = res_1 && res_2;
+    }
+    return result;
+}
+
+BitArray operator|(const BitArray& a, const BitArray& b) {
+    if (a.numberBits != b.numberBits) {
+        perror("Arrays have different size");
+    }
+    BitArray result(a.numberBits, false);
+    for (int index = 0; index < a.numberBits; ++index) {
+        bool res_1 = a[index];
+        bool res_2 = b[index];
+        result[index] = res_1 || res_2;
+    }
+    return result;
+}
+
+BitArray operator^(const BitArray& a, const BitArray& b) {
+    if (a.numberBits != b.numberBits) {
+        perror("Arrays have different size");
+    }
+    BitArray result(a.numberBits, false);
+    for (int index = 0; index < a.numberBits; ++index) {
+        bool res_1 = a[index];
+        bool res_2 = b[index];
+        result[index] = res_1 ^ res_2;
+    }
+    return result;
+}
+
+BitArray& BitArray::setAllTrue() {
+    for (int index = 0; index < numberBits; ++index) {
+        (*this)[index] = true;
+    }
+    return *this;
+}
+
+BitArray& BitArray::setAllFalse() {
+    for (int index = 0; index < numberBits; ++index) {
+        (*this)[index] = false;
+    }
+    return *this;
+}
+
+bool BitArray::any() const {
+    for (int index = 0; index < numberBits; ++index) {
+        if ((*this)[index]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool BitArray::none() const {
+    for (int index = 0; index < numberBits; ++index) {
+        if ((*this)[index]) {
+            return false;
+        }
+    }
+    return true;
+}
