@@ -311,4 +311,33 @@ TEST(BitArrayTest, NoneTest) {
     EXPECT_EQ(array.none(), false);
 }
 
+TEST(BitArrayTest, TildaOperatorTest) {
+    BitArray array(4, true);
+    array.resize(8, false);
+    std::cout << array.to_string() << std::endl;
+    EXPECT_EQ(array[0], true);
+    array = (~array);
+    EXPECT_EQ(array[0], false);
+    std::cout << array.to_string() << std::endl;
+}
+
+TEST(BitArrayTest, CountTest) {
+    BitArray array(4, true);
+    array.resize(8, false);
+    EXPECT_EQ(array.count(), 4);
+}
+
+TEST(BitArrayTest, ClearTest) {
+    BitArray array(4, true);
+    array.clear();
+    EXPECT_EQ(array.getNumberBits(), 0);
+    EXPECT_EQ(array.getNumberBlocks(), 0);
+}
+
+TEST(BitArrayTest, EmptyTest) {
+    BitArray array;
+    array.clear();
+    EXPECT_EQ(array.empty(), true);
+}
+
 #endif //TASK1_BITARRAYTESTS_H

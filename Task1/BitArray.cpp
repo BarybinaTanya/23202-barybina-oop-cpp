@@ -174,6 +174,7 @@ void BitArray::clear() {
     numberBits = 0;
     numberBlocks = 0;
     delete[] data;
+    data = new unsigned long[0];
 }
 
 void BitArray::pushBack(bool bit) {
@@ -387,4 +388,31 @@ bool BitArray::none() const {
         }
     }
     return true;
+}
+
+BitArray BitArray::operator~() const {
+    for (int index = 0; index < numberBits; ++index) {
+        if ((*this)[index]) {
+            (*this)[index] = false;
+        } else {
+            (*this)[index] = true;
+        }
+    }
+    return *this;
+}
+
+int BitArray::count() const {
+    int count = 0;
+    for (int index = 0; index < numberBits; ++index) {
+        if ((*this)[index]) {
+            count++;
+        }
+    }
+    return count;
+}
+
+bool BitArray::empty() const {
+    if (numberBits == 0) {
+        return true;
+    }
 }

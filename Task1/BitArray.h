@@ -43,7 +43,6 @@ public:
     BitArray operator~() const;
 
     int count() const;
-    int size() const;
     bool empty() const;
 
     std::string to_string() const;
