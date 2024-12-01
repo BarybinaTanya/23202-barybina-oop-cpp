@@ -17,7 +17,14 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(t2 main.cpp
-        GoogleTests/testFile.h)
+        GoogleTests/GameStateTests.h
+
+        GameState.cpp
+        GameState.h
+
+        StateCounter.cpp
+        StateCounter.h
+)
 
 target_link_libraries(t2 GTest::gtest_main)
 
