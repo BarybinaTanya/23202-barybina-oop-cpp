@@ -1,0 +1,13 @@
+Hello! It's the Life Game! Here are rules of the game:
+
+1 File Format:
+
+1.1 The game uses Life 1.06 input file format. It means that if you want to initialise specific cells alive, you
+need to write their coordinates first. Coordinate of the cell here is the shift of this cell to x positions
+by coordinate x and y positions by coordinate y. Shifts may also have negative values. Example:
+0 -1
+1 0
+-1 1
+0 1
+1 1
+

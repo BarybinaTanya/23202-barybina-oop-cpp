@@ -1,20 +1,30 @@
 #ifndef TASK2_GAMESTATE_H
 #define TASK2_GAMESTATE_H
 
+#include <iostream>
+#include <xstring>
+#include <vector>
+
 typedef unsigned long ul;
 
 class GameState {
 private:
-    ul windowWidth;
-    ul windowHeight;
-
+    ul windowX;
+    ul windowY;
+    std::string rules;
     bool** matrix;
 
-public:
-    GameState(ul width, ul height);
-    ~GameState();
-    bool** getMatrix();
     void setDefaultMatrixState();
+
+public:
+    GameState(ul width_x, ul height_y, const std::string &inRules);
+    GameState(ul width_x, ul height_y, const std::string &inRules, std::vector<std::pair<int, int>> &aliveCells);
+    ~GameState();
+    //void updateGameState();
+
+    [[nodiscard]] ul getWidth() const;
+    [[nodiscard]] ul getHeight() const;
+    bool** getMatrix();
 };
 
 
