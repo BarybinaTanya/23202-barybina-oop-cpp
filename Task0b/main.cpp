@@ -8,33 +8,34 @@
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
-//    Reader reader;
-//    reader.openFile("input1.txt");
-//
-//    Splitter splitter;
-//    WordsStatistics statistics;
-//    CSVFileWriter writer;;
-//
-//    while (reader.hasNextLine()) {
-//        string line = reader.readLine();
-//        std::vector<string> splitted_line = splitter.splitLine(line);
-//        statistics.addWords(splitted_line);
-//    }
-//
-//    std::cout << "Lines read: "<< reader.getNumberLinesRead() <<  std::endl;
-//    string word = "what";
-//    std::pair<int, float> stat = statistics.getStatisticsByWord(word);
-//
-//    writer.openFile("output2.csv");
-//    std::vector<string> to_write;
-//    to_write.push_back(word);
-//    to_write.push_back(std::to_string(stat.first));
-//    to_write.push_back(std::to_string(stat.second));
-//
-//    writer.write(to_write);
-//
-//    reader.closeFile();
-//    writer.closeFile();
+    Reader file;
+    file.openFile("input1.txt");
+    std::string line;
+    std::vector <string> splitted;
+    std::vector <string> res;
+    WordsStatistics statistics;
 
+    for (int i = 0; i < 10; ++i) {
+        line = file.readLine();
+        splitted = Splitter::splitLine(line);
+        for (const auto& pLine : splitted) {
+            res.push_back(pLine);
+            statistics.addWord(pLine);
+        }
+    }
+    std::vector <string> allWords = statistics.getAllWords();
+
+    std::cout << "Number of words: " << statistics.getNumberWords() << std::endl;
+
+    for (const auto& word : allWords) {
+        std::cout << word << ": " << statistics.getStatisticsByWord(word).first << "  " <<
+        statistics.getStatisticsByWord(word).second << std::endl;
+    }
+    std::cout << "_____________________________________________________________" << std::endl;
+    for (const auto& elem : res) {
+        std::cout << elem << std::endl;
+    }
+
+    file.closeFile();
     return RUN_ALL_TESTS();
 }

@@ -5,42 +5,38 @@
 #include <fstream>
 #include "../Splitter.h"
 
-TEST(SpliterTest, test) {
-    EXPECT_EQ(1,1);
+TEST(SplitterTest, SplitLine_EmptyString) {
+    Splitter splitter;
+    std::vector<std::string> result = splitter.splitLine("");
+    EXPECT_TRUE(result.empty());
 }
-//TEST(SplitterTests, AddDelimiterTest) {
-//    Splitter splitWizard;
-//    splitWizard.addDelimiter("__");
-//    splitWizard.addDelimiter("++");
-//    EXPECT_EQ(splitWizard.getDelimiters(), "__|\\+\\+");
-//}
-//
-//TEST(SplitterTest, GetDelimitersTest) {
-//    Splitter splitter;
-//    EXPECT_EQ(splitter.getDelimiters(), "");
-//}
-//
-//TEST(SplitterTest, RemoveDelimiterTest) {
-//    Splitter splitter;
-//    splitter.removeDelimiter("!");
-//    EXPECT_EQ(splitter.getDelimiters(), " |\\n|;|\\.|:|,|\\\"|\\?");
-//}
-//
-//TEST(SplitterTest, RemoveAllDelimitersTest) {
-//    Splitter splitter;
-//    splitter.removeAllDelimiters();
-//    EXPECT_EQ(splitter.getDelimiters().size(), 0);
-//}
-//
-//TEST(SplitterTest, SplitLineTest) {
-//    Splitter splitter;
-//    int print_it = 0;
-//    std::vector<string> splitted_line = splitter.splitLine("I want to code! Math, please, let me code!");
-//    EXPECT_EQ(splitted_line.size(), 9);
-//    while (print_it < splitted_line.size()) {
-//        std::cout << splitted_line[print_it] << std::endl;
-//        print_it++;
-//    }
-//}
+
+TEST(SplitterTest, SplitLine_SingleWord) {
+    Splitter splitter;
+    std::vector<std::string> result = splitter.splitLine("Hello");
+    ASSERT_EQ(result.size(), 1);
+    EXPECT_EQ(result[0], "Hello");
+}
+
+TEST(SplitterTest, SplitLine_MultipleWords) {
+    Splitter splitter;
+    std::vector<std::string> result = splitter.splitLine("Hello world! This is a test.");
+    std::vector<std::string> expected = {"Hello", "world", "This", "is", "a", "test"};
+    EXPECT_EQ(result, expected);
+}
+
+TEST(SplitterTest, SplitLine_Punctuation) {
+    Splitter splitter;
+    std::vector<std::string> result = splitter.splitLine("Good morning, world! How are you?");
+    std::vector<std::string> expected = {"Good", "morning", "world", "How", "are", "you"};
+    EXPECT_EQ(result, expected);
+}
+
+TEST(SplitterTest, SplitLine_NumbersAndWords) {
+    Splitter splitter;
+    std::vector<std::string> result = splitter.splitLine("123 apples and 456 oranges.");
+    std::vector<std::string> expected = {"123", "apples", "and", "456", "oranges"};
+    EXPECT_EQ(result, expected);
+}
 
 #endif //INC_0B_SPLITTERTESTS_H
