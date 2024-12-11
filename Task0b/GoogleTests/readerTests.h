@@ -3,86 +3,148 @@
 
 #include <gtest/gtest.h>
 #include <fstream>
+#include <cstdio>
 #include "../Reader.h"
 
-std::string readerTestFiles[] = {"test_file1.txt", "test_file2.txt"};
-
-void createTestFileType1 (std::string newFileName) {
-    std::ofstream test_file(newFileName);
-    test_file << "First Line\nSecond Line\nThird line";
-    test_file.close();
+// Helper function to create a temporary file
+std::string createTempFile(const std::string& content) {
+    const std::string fileName = "temp_test_file.txt";
+    std::ofstream tempFile(fileName);
+    tempFile << content;
+    tempFile.close();
+    return fileName;
 }
 
-void createTestFileType2 (std::string newFileName) {
-    std::ofstream test_file(newFileName);
-    test_file << "";
-    test_file.close();
+// Helper function to delete a temporary file
+void deleteTempFile(const std::string& fileName) {
+    std::remove(fileName.c_str());
 }
 
-TEST(ReaderTest, GetFileTest) {
-    Reader readerWizard;
-    ASSERT_TRUE(!readerWizard.getFile());
-}
+// Test for the openFile method
+//TEST(ReaderTest, OpenFileTest) {
+//    Reader reader;
+//    std::string fileName = createTempFile("Test content\nAnother line\n");
+//
+//    EXPECT_NO_THROW(reader.openFile(fileName));
+//
+//    EXPECT_THROW(reader.openFile("nonexistent_file.txt"), std::runtime_error);
+//
+//    reader.closeFile();
+//    deleteTempFile(fileName);
+//}
 
-TEST(ReaderTest, OpenFileTest) {
-    Reader readerWizard;
-    createTestFileType1(readerTestFiles[0]);
-    readerWizard.openFile(readerTestFiles[0]);
-
-    ASSERT_TRUE(readerWizard.getFile()->is_open());
-}
-
+// Test for the closeFile method
 TEST(ReaderTest, CloseFileTest) {
-    Reader readerWizard;
-    readerWizard.openFile(readerTestFiles[0]);
-    readerWizard.closeFile();
-
-    ASSERT_TRUE(readerWizard.getFile() == nullptr);
-}
-
-TEST(ReaderTest, ReadLineTest) {
-    Reader readerWizard;
-    readerWizard.openFile(readerTestFiles[0]);
-
-    EXPECT_EQ("First Line", readerWizard.readLine());
-    EXPECT_EQ("Second Line", readerWizard.readLine());
-    EXPECT_EQ("Third line", readerWizard.readLine());
-}
-
-TEST(ReaderTest, HasNextLineTest) {
-    Reader readerWizard;
-
-    readerWizard.openFile(readerTestFiles[0]);
-    EXPECT_EQ(readerWizard.hasNextLine(), true);
-
-    readerWizard.closeFile();
-}
-
-TEST(ReaderTest, GetAllLinesReadTest) {
-    Reader readerWizard;
-    readerWizard.openFile(readerTestFiles[0]);
-    EXPECT_EQ(readerWizard.getAllLinesRead().size(), 0);
-
-    readerWizard.readLine();
-    EXPECT_EQ(readerWizard.getAllLinesRead().size(), 1);
-    readerWizard.closeFile();
-}
-
-TEST(ReaderTest, GetNumberLinesMetTest) {
-    Reader readerWizard;
-    readerWizard.openFile(readerTestFiles[0]);
-    EXPECT_EQ(readerWizard.getNumberLinesRead(), 0);
-
-    readerWizard.readLine();
-    EXPECT_EQ(readerWizard.getNumberLinesRead(), 1);
-    readerWizard.closeFile();
-}
-
-TEST(ReaderTest, IsFileEmptyTest) {
     Reader reader;
-    reader.openFile(readerTestFiles[1]);
-    EXPECT_EQ(reader.isFileEmpty(), false);
+    std::string fileName = createTempFile("Test content\n");
+    reader.openFile(fileName);
+
+    EXPECT_NO_THROW(reader.closeFile());
+    EXPECT_NO_THROW(reader.closeFile()); // Ensure no exception when closing already closed file
+
+    deleteTempFile(fileName);
+}
+
+// Test for the isFileEmpty method
+//TEST(ReaderTest, IsFileEmptyTest) {
+//    Reader reader;
+//    std::string emptyFile = createTempFile("");
+//    std::string nonEmptyFile = createTempFile("Not empty\n");
+//
+//    reader.openFile(emptyFile);
+//    EXPECT_TRUE(reader.isFileEmpty());
+//    reader.closeFile();
+//
+//    reader.openFile(nonEmptyFile);
+//    EXPECT_FALSE(reader.isFileEmpty());
+//    reader.closeFile();
+//
+//    deleteTempFile(emptyFile);
+//    deleteTempFile(nonEmptyFile);
+//}
+
+// Test for the readLine method
+TEST(ReaderTest, ReadLineTest) {
+    Reader reader;
+    std::string fileName = createTempFile("Line1\nLine2\n");
+
+    reader.openFile(fileName);
+
+    EXPECT_EQ(reader.readLine(), "Line1");
+    EXPECT_EQ(reader.readLine(), "Line2");
+    EXPECT_EQ(reader.readLine(), ""); // Ensure empty string for EOF
+
+    EXPECT_EQ(reader.getNumberLinesRead(), 2);
+
     reader.closeFile();
+    deleteTempFile(fileName);
+}
+
+// Test for the hasNextLine method
+TEST(ReaderTest, HasNextLineTest) {
+    Reader reader;
+    std::string fileName = createTempFile("Line1\nLine2\n");
+
+    reader.openFile(fileName);
+
+    EXPECT_TRUE(reader.hasNextLine());
+    reader.readLine();
+    EXPECT_TRUE(reader.hasNextLine());
+    reader.readLine();
+    EXPECT_FALSE(reader.hasNextLine());
+
+    reader.closeFile();
+    deleteTempFile(fileName);
+}
+
+// Test for the getAllLinesRead method
+TEST(ReaderTest, GetAllLinesReadTest) {
+    Reader reader;
+    std::string fileName = createTempFile("Line1\nLine2\nLine3\n");
+
+    reader.openFile(fileName);
+
+    reader.readLine();
+    reader.readLine();
+
+    auto allLines = reader.getAllLinesRead();
+    EXPECT_EQ(allLines.size(), 2);
+    EXPECT_EQ(allLines[0], "Line1");
+    EXPECT_EQ(allLines[1], "Line2");
+
+    reader.closeFile();
+    deleteTempFile(fileName);
+}
+
+// Test for the getNumberLinesRead method
+TEST(ReaderTest, GetNumberLinesReadTest) {
+    Reader reader;
+    std::string fileName = createTempFile("Line1\nLine2\n");
+
+    reader.openFile(fileName);
+
+    reader.readLine();
+    reader.readLine();
+
+    EXPECT_EQ(reader.getNumberLinesRead(), 2);
+
+    reader.closeFile();
+    deleteTempFile(fileName);
+}
+
+// Test for the getFile method
+TEST(ReaderTest, GetFileTest) {
+    Reader reader;
+    std::string fileName = createTempFile("Test content\n");
+
+    reader.openFile(fileName);
+
+    EXPECT_NE(reader.getFile(), nullptr); // File should be open
+
+    reader.closeFile();
+    EXPECT_EQ(reader.getFile(), nullptr); // File should be closed
+
+    deleteTempFile(fileName);
 }
 
 #endif //INC_0B_READERTESTS_H

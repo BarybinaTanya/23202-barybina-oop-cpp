@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <stdexcept>
 
 using std::string;
 
@@ -14,14 +15,14 @@ private:
     std::vector<string> allLines;
     unsigned long long numberLinesRead = 0;
 public:
-    void openFile(string fileName);
+    void openFile(const string &fileName);
     void closeFile();
     std::ifstream* getFile();
-    bool isFileEmpty() const;
+    bool isFileEmpty();
     string readLine();
-    bool hasNextLine() const;
-    std::vector<string> getAllLinesRead() const;
-    unsigned long long getNumberLinesRead() const;
+    bool hasNextLine();
+    [[nodiscard]] const std::vector<std::string>& getAllLinesRead() const;
+    [[nodiscard]] unsigned long long getNumberLinesRead() const;
 };
 
 #endif //INC_0B_READER_H
