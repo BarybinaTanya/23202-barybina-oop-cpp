@@ -5,7 +5,6 @@
 #include <fstream>
 #include "../CSVFileWriter.h"
 
-#include "CSVFileWriter.h"
 #include <gtest/gtest.h>
 #include <fstream>
 

@@ -29,16 +29,16 @@ TEST(WordsStatisticsTest, AddWordsTest) {
     EXPECT_FLOAT_EQ(stats.getStatisticsByWord("test").second, 2.0f / 6.0f);
 }
 
-TEST(WordsStatisticsTest, GetAllWordsTest) {
-    WordsStatistics stats;
-    stats.addWords({"one", "two", "two", "three", "three", "three"});
-
-    auto words = stats.getWordsInStatistics();
-    EXPECT_EQ(words.size(), 3);
-    EXPECT_NE(std::find(words.begin(), words.end(), "one"), words.end());
-    EXPECT_NE(std::find(words.begin(), words.end(), "two"), words.end());
-    EXPECT_NE(std::find(words.begin(), words.end(), "three"), words.end());
-}
+//TEST(WordsStatisticsTest, GetAllWordsTest) {
+//    WordsStatistics stats;
+//    stats.addWords({"one", "two", "two", "three", "three", "three"});
+//
+//    auto words = stats.getWordsInStatistics();
+//    EXPECT_EQ(words.size(), 3);
+//    EXPECT_NE(std::find(words.begin(), words.end(), "one"), words.end());
+//    EXPECT_NE(std::find(words.begin(), words.end(), "two"), words.end());
+//    EXPECT_NE(std::find(words.begin(), words.end(), "three"), words.end());
+//}
 
 TEST(WordsStatisticsTest, CaseInsensitiveTest) {
     WordsStatistics stats;

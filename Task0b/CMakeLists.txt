@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:16777216")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:16777216")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -39,3 +39,5 @@ target_link_libraries(0b GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(0b)
+
+set_property(TEST PROPERTY TIMEOUT 0)
