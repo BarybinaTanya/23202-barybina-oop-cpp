@@ -33,7 +33,7 @@ TEST(WordsStatisticsTest, GetAllWordsTest) {
     WordsStatistics stats;
     stats.addWords({"one", "two", "two", "three", "three", "three"});
 
-    auto words = stats.getAllWords();
+    auto words = stats.getWordsInStatistics();
     EXPECT_EQ(words.size(), 3);
     EXPECT_NE(std::find(words.begin(), words.end(), "one"), words.end());
     EXPECT_NE(std::find(words.begin(), words.end(), "two"), words.end());

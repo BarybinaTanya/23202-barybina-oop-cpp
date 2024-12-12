@@ -1,32 +1,20 @@
 #include "CSVFileWriter.h"
+#include <stdexcept>
 
 bool CSVFileWriter::isCSV(const string &fileName) {
-    int lastInd = fileName.size() - 1;
-    if (!(fileName[lastInd] == 'v' && fileName[lastInd - 1] == 's' &&
-          fileName[lastInd - 2] == 'c' && fileName[lastInd - 3] == '.')) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    const string extension = ".csv";
+    return fileName.size() >= extension.size() &&
+           fileName.compare(fileName.size() - extension.size(), extension.size(), extension) == 0;
 }
 
 void CSVFileWriter::openFile(const string &fileName) {
     if (!isCSV(fileName)) {
-        std::cerr << "You are trying to create or open non .csv file!" << std::endl;
-        return;
+        throw std::invalid_argument("File name must have .csv extension: " + fileName);
     }
-    outputFile.open(fileName);
-    if (!outputFile.is_open()) {
-        std::cerr << "Error opening file: " << fileName << std::endl;
-    }
-}
 
-std::ofstream* CSVFileWriter::getFile() {
-    if (outputFile.is_open()) {
-        return &outputFile;
-    } else {
-        return nullptr;
+    outputFile.open(fileName, std::ios::out | std::ios::trunc);
+    if (!outputFile.is_open()) {
+        throw std::ios_base::failure("Failed to open file: " + fileName);
     }
 }
 
@@ -36,13 +24,24 @@ void CSVFileWriter::closeFile() {
     }
 }
 
-void CSVFileWriter::write(std::vector<string> &vector) {
+void CSVFileWriter::write(const std::vector<string> &data) {
     if (!outputFile.is_open()) {
-        perror("Nowhere to write. Output file is closed.");
+        throw std::ios_base::failure("File is not open for writing.");
+    }
+
+    if (data.empty()) {
         return;
     }
-    for (const auto &element : vector) {
-        outputFile << element << ',';
+
+    for (size_t i = 0; i < data.size(); ++i) {
+        outputFile << data[i];
+        if (i < data.size() - 1) {
+            outputFile << ',';
+        }
     }
     outputFile << '\n';
+}
+
+std::ofstream* CSVFileWriter::getFile() {
+    return outputFile.is_open() ? &outputFile : nullptr;
 }

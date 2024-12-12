@@ -29,8 +29,8 @@ void WordsStatistics::addWord(const string &word) {
     recalculateFrequencies();
 }
 
-std::vector<string> WordsStatistics::getAllWords() const {
-    std::vector<string> result;
+std::list<string> WordsStatistics::getWordsInStatistics() const {
+    std::list<std::string> result;
     for (const auto &entry : statistics) {
         result.push_back(entry.first);
     }
@@ -46,6 +46,8 @@ std::pair<int, float> WordsStatistics::getStatisticsByWord(const string &word) c
     return {0, 0.0f};
 }
 
-int WordsStatistics::getNumberWords() {
+int WordsStatistics::getNumberWords() const {
     return totalWordCount;
 }
+
+
