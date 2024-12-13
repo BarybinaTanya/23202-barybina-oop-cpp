@@ -24,6 +24,10 @@ add_executable(t2 main.cpp
 
         StateCounter.cpp
         StateCounter.h
+        MatrixProxy.h
+        RuleParser.cpp
+        RuleParser.h
+        RuleParser.h
 )
 
 target_link_libraries(t2 GTest::gtest_main)

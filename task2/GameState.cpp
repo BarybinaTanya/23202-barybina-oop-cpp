@@ -22,18 +22,19 @@ GameState::GameState(size_t width, size_t height, const std::set<int>& birth, co
     matrix.resize(height, std::vector<bool>(width, false));
 }
 
-int normalizedIndex(int index, int size) {
+size_t normalizedIndex(size_t index, size_t size) {
     return (index % size + size) % size;
 }
 
-void GameState::setAliveCells(const std::vector<std::pair<int, int>>& aliveCells) {
+void GameState::initializeState(const std::vector<std::pair<int, int>>& aliveCells) {
     // If the figure is not balanced around the center, it doesn't really matter
     // as the field is toroidal. Layering may happen only if the figure has
     // its size grater then one of window parameters.
     size_t centerX = widthX / 2;
     size_t centerY = heightY / 2;
     for (auto coordinateShift : aliveCells) {
-        matrix[(centerY + coordinateShift.second) % heightY][(centerX + coordinateShift.first) % widthX] = true;
+        matrix[normalizedIndex(centerY + coordinateShift.second,heightY)]
+              [normalizedIndex(centerX + coordinateShift.first,widthX)] = true;
     }
 }
 
@@ -43,8 +44,4 @@ size_t GameState::getWidth() const{
 
 size_t GameState::getHeight() const{
     return heightY;
-}
-
-std::vector<std::vector<bool>>& GameState::getMatrix() {
-    return matrix;
 }

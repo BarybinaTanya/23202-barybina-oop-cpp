@@ -2,47 +2,47 @@
 #define TASK2_GAMESTATETESTS_H
 
 #include <gtest/gtest.h>
-#include "GameState.h"
+#include "..\GameState.h"
 
-TEST(GameStateTests, ConstructorDestructorBasicTest) {
-    auto* field = new GameState(100, 100, "B3/S23");
-    EXPECT_EQ(field->getMatrix()[0][0], false);
-    delete field;
-    SUCCEED();
-}
-
-void printMatrix(GameState &field) {
-    for (int i = field.getHeight() - 1; i >= 0; --i) {
-        for (int j = 0; j < field.getWidth(); ++j) { // To make it regular xOy.
-            std::cout << field.getMatrix()[i][j] << ' ';
+void printMatrix(GameState& gameState) {
+    for (size_t y = 0; y < gameState.getHeight(); ++y) {
+        for (size_t x = 0; x < gameState.getWidth(); ++x) {
+            std::cout << (gameState.getMatrixProxy().at(x,y) ? "O" : ".") << " ";
         }
-        std::cout << '\n';
+        std::cout << "\n";
     }
 }
 
-TEST(GameStateTests, SetDefaultAndGettersTest) {
-    GameState field1(10, 10, "B3/S23");
-    printMatrix(field1);
-    EXPECT_EQ(field1.getMatrix()[6][5], true);
-    EXPECT_EQ(field1.getMatrix()[5][6], true);
-    EXPECT_EQ(field1.getMatrix()[4][6], true);
-    EXPECT_EQ(field1.getMatrix()[4][5], true);
-    EXPECT_EQ(field1.getMatrix()[4][4], true);
+TEST(GameStateTest, initializeDefaultStateTest) {
+    GameState gameState(5, 5, {2}, {2,3});
+    gameState.initializeDefaultState();
+
+    std::cout << "Default state:\n";
+    printMatrix(gameState);
+    SUCCEED();
 }
 
-TEST(GameStateTests, InitFieldWithAliveCellsTest) {
-    std::vector<std::pair<int, int>> aliveCells = {{1,1}, {2, 1}, {3, 1},
-    {4,1},{4, 2},{4,3},{4,4},
-    {3,4},{2,4},{1,4},{1,3}, {1,2},
+TEST(GameStateTest, testSetAliveCellsTest) {
+    GameState gameState(5, 5, {}, {});
+    gameState.initializeState({{0,  0},
+                               {1,  1},
+                               {2,  2},
+                               {-2, -2}});
 
-    {-1,1},{-2,1},{-2,2},{-1,2},
+    std::cout << "State after setting alive cells:\n";
+    printMatrix(gameState);
+    SUCCEED();
+}
 
-    {-1,-1},{0,-2},{0,-3},{-1,-3},{-2,-3}
-    };
+TEST(GameStateTest, testToroidalWrappingTest) {
+    GameState gameState(5, 5, {}, {});
+    gameState.initializeState({{-1, 0},
+                               {0,  0},
+                               {0,  -1},
+                               {0,  0}});
 
-    GameState field1(10, 10, "B3/S23", aliveCells);
-    field1.getMatrix()[0][0] = true;
-    printMatrix(field1);
+    std::cout << "State with toroidal wrapping:\n";
+    printMatrix(gameState);
     SUCCEED();
 }
 
