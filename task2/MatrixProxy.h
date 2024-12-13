@@ -3,6 +3,10 @@
 
 #include <vector>
 
+size_t normalizedIndex(size_t index, size_t size) {
+    return (index % size + size) % size;
+}
+
 class MatrixProxy {
 private:
     std::vector<std::vector<bool>>& matrix;

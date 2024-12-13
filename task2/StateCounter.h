@@ -7,7 +7,7 @@ class StateCounter {
 private:
     GameState currentField;
 public:
-    void processGeneration(GameState &field);
+    void processGeneration();
 };
 
 #endif //TASK2_STATECOUNTER_H
