@@ -35,6 +35,3 @@ void StateCounter::processGeneration(GameState &field) {
 
 }
 
-void StateCounter::processNGenerations() {
-
-}

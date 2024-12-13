@@ -8,7 +8,6 @@ private:
     GameState currentField;
 public:
     void processGeneration(GameState &field);
-    void processNGenerations();
 };
 
 #endif //TASK2_STATECOUNTER_H

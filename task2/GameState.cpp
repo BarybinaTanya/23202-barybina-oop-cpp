@@ -1,71 +1,50 @@
 #include "GameState.h"
 
-void GameState::setDefaultMatrixState() {
-    ul centerX = windowX / 2;
-    ul centerY = windowY / 2;
+void GameState::initializeDefaultState() {
+    matrix.resize(heightY, std::vector<bool>(widthX, false));
+    size_t centerX = widthX / 2;
+    size_t centerY = heightY / 2;
 
     // easy spaceship
-    matrix[(centerY + 1) % windowY][(centerX) % windowX] = true;
-    matrix[(centerY) % windowY][(centerX + 1) % windowX] = true;
-    matrix[(centerY - 1) % windowY][(centerX - 1) % windowX] = true;
-    matrix[(centerY - 1) % windowY][(centerX) % windowX] = true;
-    matrix[(centerY - 1) % windowY][(centerX + 1) % windowX] = true;
+    matrix[(centerY + 1) % heightY][(centerX) % widthX] = true;
+    matrix[(centerY) % heightY][(centerX + 1) % widthX] = true;
+    matrix[(centerY - 1) % heightY][(centerX - 1) % widthX] = true;
+    matrix[(centerY - 1) % heightY][(centerX) % widthX] = true;
+    matrix[(centerY - 1) % heightY][(centerX + 1) % widthX] = true;
 }
 
-GameState::GameState(ul width_x, ul height_y, const std::string &inRules) {
-    windowX = width_x;
-    windowY = height_y;
-    rules = inRules;
+GameState::GameState(size_t width, size_t height, const std::set<int>& birth, const std::set<int>& survival) {
+    widthX = width;
+    heightY = height;
+    birthRules = birth;
+    survivalRules = survival;
 
-    matrix = new bool* [windowY];
-    for (int i = 0; i < windowY; ++i) {
-        matrix[i] = new bool [windowX];
-        for (int j = 0; j < windowX; ++j) {
-            matrix[i][j] = false;
-        }
-    }
-    if (windowX > 4 && windowY > 4) {
-        this->setDefaultMatrixState();
-    }
+    matrix.resize(height, std::vector<bool>(width, false));
 }
 
-GameState::GameState(ul width_x, ul height_y, const std::string &inRules, std::vector<std::pair<int, int>> &aliveCells) {
+int normalizedIndex(int index, int size) {
+    return (index % size + size) % size;
+}
 
-    windowX = width_x;
-    windowY = height_y;
-    rules = inRules;
-
-    matrix = new bool* [windowY];
-    for (int i = 0; i < windowY; ++i) {
-        matrix[i] = new bool [windowX];
-        for (int j = 0; j < windowX; ++j) {
-            matrix[i][j] = false;
-        }
-    }
-    ul centerX = windowX / 2;
-    ul centerY = windowY / 2;
-
+void GameState::setAliveCells(const std::vector<std::pair<int, int>>& aliveCells) {
+    // If the figure is not balanced around the center, it doesn't really matter
+    // as the field is toroidal. Layering may happen only if the figure has
+    // its size grater then one of window parameters.
+    size_t centerX = widthX / 2;
+    size_t centerY = heightY / 2;
     for (auto coordinateShift : aliveCells) {
-        matrix[(centerY + coordinateShift.second) % windowY][(centerX + coordinateShift.first) % windowX] = true;
+        matrix[(centerY + coordinateShift.second) % heightY][(centerX + coordinateShift.first) % widthX] = true;
     }
 }
 
-GameState::~GameState() {
-    for (int i = 0; i < windowY; ++i) {
-        delete[] matrix[i];
-    }
-    delete[] matrix;
-    matrix = nullptr;
+size_t GameState::getWidth() const{
+    return widthX;
 }
 
-ul GameState::getWidth() const{
-    return windowX;
+size_t GameState::getHeight() const{
+    return heightY;
 }
 
-ul GameState::getHeight() const{
-    return windowY;
-}
-
-bool** GameState::getMatrix() {
+std::vector<std::vector<bool>>& GameState::getMatrix() {
     return matrix;
 }
