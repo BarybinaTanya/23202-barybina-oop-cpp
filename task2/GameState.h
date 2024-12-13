@@ -17,11 +17,18 @@ private:
 
 public:
     GameState(size_t width, size_t height, const std::set<int>& birth, const std::set<int>& survival);
+    GameState(const GameState& other)
+            : widthX(other.widthX), heightY(other.heightY), matrix(other.matrix),
+              birthRules(other.birthRules), survivalRules(other.survivalRules) {}
+
     void initializeState(const std::vector<std::pair<int, int>>& aliveCells);
     void initializeDefaultState();
 
     [[nodiscard]] size_t getWidth() const;
     [[nodiscard]] size_t getHeight() const;
+    [[nodiscard]] std::set<int> getBirthRules() const;
+    [[nodiscard]] std::set<int> getSurvivalRules() const;
+
 
     MatrixProxy getMatrixProxy() {
         return MatrixProxy(matrix);

@@ -28,6 +28,8 @@ add_executable(t2 main.cpp
         RuleParser.cpp
         RuleParser.h
         RuleParser.h
+        GoogleTests/RuleParserTests.h
+        MatrixProxy.cpp
 )
 
 target_link_libraries(t2 GTest::gtest_main)

@@ -38,10 +38,18 @@ void GameState::initializeState(const std::vector<std::pair<int, int>>& aliveCel
     }
 }
 
-size_t GameState::getWidth() const{
+size_t GameState::getWidth() const {
     return widthX;
 }
 
-size_t GameState::getHeight() const{
+size_t GameState::getHeight() const {
     return heightY;
+}
+
+std::set<int> GameState::getBirthRules() const {
+    return birthRules;
+}
+
+std::set<int> GameState::getSurvivalRules() const {
+    return survivalRules;
 }

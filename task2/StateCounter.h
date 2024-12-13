@@ -4,10 +4,8 @@
 #include "GameState.h"
 
 class StateCounter {
-private:
-    GameState currentField;
 public:
-    void processGeneration();
+    static short processGeneration(GameState &state);
 };
 
 #endif //TASK2_STATECOUNTER_H
