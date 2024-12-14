@@ -17,19 +17,20 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(t2 main.cpp
-        GoogleTests/GameStateTests.h
-
         GameState.cpp
         GameState.h
+        GoogleTests/GameStateTests.h
 
         StateCounter.cpp
         StateCounter.h
+        GoogleTests/StateCounterTests.h
+
+        MatrixProxy.cpp
         MatrixProxy.h
+
         RuleParser.cpp
         RuleParser.h
-        RuleParser.h
         GoogleTests/RuleParserTests.h
-        MatrixProxy.cpp
 )
 
 target_link_libraries(t2 GTest::gtest_main)

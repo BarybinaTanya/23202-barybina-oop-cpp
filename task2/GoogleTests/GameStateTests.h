@@ -11,6 +11,8 @@ void printMatrix(GameState& gameState) {
         }
         std::cout << "\n";
     }
+    std::cout << "\n";
+    std::cout << "\n";
 }
 
 TEST(GameStateTest, initializeDefaultStateTest) {

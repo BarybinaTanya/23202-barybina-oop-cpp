@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include "GoogleTests/GameStateTests.h"
 #include "GoogleTests/RuleParserTests.h"
+#include "GoogleTests/StateCounterTests.h"
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
