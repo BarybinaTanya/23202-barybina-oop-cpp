@@ -3,6 +3,12 @@
 
 #include "GameState.h"
 
+enum processGameResults {
+    EMPTY_MATRIX,
+    EMPTY_RULES,
+    SUCCESS_PROCESSING
+};
+
 class StateCounter {
 public:
     static short processGeneration(GameState &state);

@@ -2,12 +2,6 @@
 
 using namespace std;
 
-enum results {
-    EMPTY_MATRIX,
-    EMPTY_RULES,
-    SUCCESS
-};
-
 short countNeighbors(GameState &state, size_t x, size_t y) {
     short neighborsCount = 0;
     for (int i = -1; i <= 1; ++i) {
@@ -73,6 +67,6 @@ short StateCounter::processGeneration(GameState &state) {
         }
     }
     state = newState;
-    return SUCCESS;
+    return SUCCESS_PROCESSING;
 }
 

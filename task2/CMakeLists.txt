@@ -28,9 +28,15 @@ add_executable(t2 main.cpp
         MatrixProxy.cpp
         MatrixProxy.h
 
-        RuleParser.cpp
-        RuleParser.h
-        GoogleTests/RuleParserTests.h
+        UniverseCharacteristicsParser.cpp
+        UniverseCharacteristicsParser.h
+        GoogleTests/UniverseCharacteristicsParserTests.h
+
+        FileHandler.cpp
+        FileHandler.h
+        GameCommandPrompt.cpp
+        GameCommandPrompt.h
+        GoogleTests/FileHandlerTests.h
 )
 
 target_link_libraries(t2 GTest::gtest_main)
