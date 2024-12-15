@@ -1,6 +1,6 @@
 #include "UniverseCharacteristicsParser.h"
 
-short UniverseCharacteristicsParser::parseWindowSize(const std::string& windowSizeLine, size_t& width, size_t& height) {
+short UniverseCharacteristicsParser::parseWindowSize(const std::string& windowSizeLine, int& width, int& height) {
     std::istringstream iss(windowSizeLine);
     if (!(iss >> width >> height)) {
         return INVALID_WINDOW_SIZE_FORMAT;

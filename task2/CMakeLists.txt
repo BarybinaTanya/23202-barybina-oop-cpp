@@ -34,9 +34,11 @@ add_executable(t2 main.cpp
 
         FileHandler.cpp
         FileHandler.h
+        GoogleTests/FileHandlerTests.h
+
         GameCommandPrompt.cpp
         GameCommandPrompt.h
-        GoogleTests/FileHandlerTests.h
+        GoogleTests/GameCommandPromptTests.h
 )
 
 target_link_libraries(t2 GTest::gtest_main)

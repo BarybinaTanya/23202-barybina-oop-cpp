@@ -53,7 +53,7 @@ TEST(RuleParserTest, ValidComplexRules) {
 }
 
 TEST(UniverseCharacteristicsParserTest, ParseWindowSize_ValidInput) {
-    size_t width, height;
+    int width, height;
 
     EXPECT_EQ(UniverseCharacteristicsParser::parseWindowSize("800 600", width, height), SUCCESS_PARSING);
     EXPECT_EQ(width, 800);
@@ -66,7 +66,7 @@ TEST(UniverseCharacteristicsParserTest, ParseWindowSize_ValidInput) {
 }
 
 TEST(UniverseCharacteristicsParserTest, ParseWindowSize_InvalidInput) {
-    size_t width, height;
+    int width, height;
 
     EXPECT_EQ(UniverseCharacteristicsParser::parseWindowSize
     ("abc 600", width, height), INVALID_WINDOW_SIZE_FORMAT);

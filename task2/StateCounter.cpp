@@ -2,7 +2,7 @@
 
 using namespace std;
 
-short countNeighbors(GameState &state, size_t x, size_t y) {
+short countNeighbors(GameState &state, int x, int y) {
     short neighborsCount = 0;
     for (int i = -1; i <= 1; ++i) {
         for (int j = -1; j <= 1; ++j) {
@@ -53,8 +53,8 @@ short StateCounter::processGeneration(GameState &state) {
     GameState newState(widthX, heightY, birthRules, survivalRules);
 
     short neighborsNumber;
-    for (size_t y = 0; y < heightY; ++y) {
-        for (size_t x = 0; x < widthX; ++x) {
+    for (int y = 0; y < heightY; ++y) {
+        for (int x = 0; x < widthX; ++x) {
             neighborsNumber = countNeighbors(state, x, y);
 
             if (state.getMatrixProxy().at(x, y) && shouldStayAlive(neighborsNumber, survivalRules)) {

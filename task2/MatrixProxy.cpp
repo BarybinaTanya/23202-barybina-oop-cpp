@@ -1,10 +1,11 @@
 #include "MatrixProxy.h"
+#include <cmath>
 
-size_t normalizeIndex1(size_t index, size_t size) {
-    return (index % size + size) % size;
+int normalizeIndex1(int index, int size) {
+    return (abs(index)) % size;
 }
 
-std::vector<bool>::reference MatrixProxy::at(size_t x, size_t y) {
+std::vector<bool>::reference MatrixProxy::at(int x, int y) {
     assert(!matrix.empty() && "Matrix cannot be empty");
     assert(!matrix[0].empty() && "Matrix rows cannot be empty");
 
@@ -12,7 +13,7 @@ std::vector<bool>::reference MatrixProxy::at(size_t x, size_t y) {
     [normalizeIndex1(x, matrix[0].size())];
 }
 
-[[nodiscard]] bool MatrixProxy::at(size_t x, size_t y) const {
+[[nodiscard]] bool MatrixProxy::at(int x, int y) const {
     assert(!matrix.empty() && "Matrix cannot be empty");
     assert(!matrix[0].empty() && "Matrix rows cannot be empty");
 

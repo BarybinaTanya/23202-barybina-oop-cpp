@@ -16,10 +16,10 @@ enum fileProcessingResults{
 
 class UniverseCharacteristicsParser {
 public:
-    static short parseWindowSize(const std::string& windowSizeLine, size_t& width, size_t& height);
+    static short parseWindowSize(const std::string& windowSizeLine, int& width, int& height);
     static short parseRules(const std::string& rules, std::set<int>& birth, std::set<int>& survival);
     static short parseAliveCells(const std::vector<std::string>& lines,
-    std::vector<std::pair<int, int>> &aliveCells);
+                                 std::vector<std::pair<int, int>> &aliveCells);
 };
 
 #endif //TASK2_UNIVERSECHARACTERISTICSPARSER_H
