@@ -3,7 +3,6 @@
 #include "GoogleTests/GameStateTests.h"
 #include "GoogleTests/UniverseCharacteristicsParserTests.h"
 #include "GoogleTests/StateCounterTests.h"
-#include "GoogleTests/FileHandlerTests.h"
 #include "GoogleTests/GameCommandPromptTests.h"
 #include "GameCommandPrompt.h"
 

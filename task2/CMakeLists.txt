@@ -32,13 +32,25 @@ add_executable(t2 main.cpp
         UniverseCharacteristicsParser.h
         GoogleTests/UniverseCharacteristicsParserTests.h
 
-        FileHandler.cpp
-        FileHandler.h
-        GoogleTests/FileHandlerTests.h
+        Reader.cpp
+        Reader.h
 
         GameCommandPrompt.cpp
         GameCommandPrompt.h
         GoogleTests/GameCommandPromptTests.h
+
+        UniverseConfig.cpp
+        UniverseConfig.h
+
+        Command.cpp
+        Command.h
+
+        TickCommand.h
+
+        DumpCommand.h
+
+        FileWriter.cpp
+        FileWriter.h
 )
 
 target_link_libraries(t2 GTest::gtest_main)

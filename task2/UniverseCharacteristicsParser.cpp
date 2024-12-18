@@ -1,23 +1,22 @@
 #include "UniverseCharacteristicsParser.h"
 
-short UniverseCharacteristicsParser::parseWindowSize(const std::string& windowSizeLine, int& width, int& height) {
+void parseWindowSize(const std::string& windowSizeLine, int& width, int& height, UniverseConfig &config) {
     std::istringstream iss(windowSizeLine);
     if (!(iss >> width >> height)) {
-        return INVALID_WINDOW_SIZE_FORMAT;
+        config.setFileError(INVALID_WINDOW_SIZE_FORMAT);
     }
     std::string extra;
     if (iss >> extra) {
-        return INVALID_WINDOW_SIZE_FORMAT;
+        config.setFileError(INVALID_WINDOW_SIZE_FORMAT);
     }
-    if (width == 0 || height == 0) {
-        return WINDOW_SIZE_MUST_BE_POSITIVE;
+    if (width <= 0 || height <= 0) {
+        config.setFileError(WINDOW_SIZE_MUST_BE_POSITIVE);
     }
-    return SUCCESS_PARSING;
 }
 
-short UniverseCharacteristicsParser::parseRules(const std::string& rules, std::set<int>& birth, std::set<int>& survival) {
+void parseRules(const std::string& rules, std::set<int>& birth, std::set<int>& survival, UniverseConfig &config) {
     if (rules.substr(0, 3) != "#R " || rules[3] != 'B') {
-        return INVALID_RULE_FORMAT;
+        config.setFileError(INVALID_RULE_FORMAT);
     }
     size_t i = 4;
     while (isdigit(rules[i])) {
@@ -25,17 +24,16 @@ short UniverseCharacteristicsParser::parseRules(const std::string& rules, std::s
         i++;
     }
     if (rules[i++] != '/' || rules[i++] != 'S') {
-        return INVALID_RULE_FORMAT;
+        config.setFileError(INVALID_RULE_FORMAT);
     }
     while (isdigit(rules[i])) {
         survival.insert(rules[i] - '0');
         i++;
     }
-    return SUCCESS_PARSING;
 }
 
-short UniverseCharacteristicsParser::parseAliveCells(const std::vector<std::string>& lines,
-                                                     std::vector<std::pair<int, int>> &aliveCells) {
+void parseAliveCells(const std::vector<std::string>& lines,
+                      std::vector<std::pair<int, int>> &aliveCells, UniverseConfig &config) {
     for (const auto& line : lines) {
         if (line.empty()) {
             continue;
@@ -43,14 +41,48 @@ short UniverseCharacteristicsParser::parseAliveCells(const std::vector<std::stri
         std::istringstream iss(line);
         int x, y;
         if (!(iss >> x >> y)) {
-            return INVALID_COORDINATE_FORMAT;
+            config.setFileError(INVALID_COORDINATE_FORMAT);
         }
 
         std::string extra;
         if (iss >> extra) {
-            return INVALID_COORDINATE_FORMAT;
+            config.setFileError(INVALID_COORDINATE_FORMAT);
         }
         aliveCells.emplace_back(x, y);
     }
-    return SUCCESS_PARSING;
+}
+
+UniverseConfig UniverseCharacteristicsParser::parse(std::string &filePath) {
+    UniverseConfig configs;
+    Reader reader;
+
+    reader.openFile(filePath);
+
+
+//    std::string name = reader.readLine();
+//    configs.setUniverseName(name);
+
+    std::string rules = reader.readLine();
+    std::set<int> birth;
+    std::set<int> survival;
+    parseRules(rules, birth, survival, configs);
+
+    configs.setBirthRules(birth);
+    configs.setSurvivalRules(survival);
+
+    std::string sizeLine = reader.readLine();
+    int sizeX;
+    int sizeY;
+    parseWindowSize(sizeLine, sizeX, sizeY, configs);
+    configs.setWidth(sizeX);
+    configs.setHeight(sizeY);
+
+    std::vector<std::string> lines;
+    std::vector<std::pair<int, int>> aliveCells;
+    while (reader.hasNextLine()) {
+        lines.push_back(reader.readLine());
+    }
+    parseAliveCells(lines, aliveCells, configs);
+    configs.setAliveCells(aliveCells);
+    return configs;
 }
