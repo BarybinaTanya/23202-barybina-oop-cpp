@@ -42,7 +42,6 @@ add_executable(t2 main.cpp
         UniverseConfig.cpp
         UniverseConfig.h
 
-        Command.cpp
         Command.h
 
         TickCommand.h

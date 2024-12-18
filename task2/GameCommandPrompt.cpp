@@ -99,7 +99,7 @@ void mainMenu() {
         if (command == "online_mode") {
             processOnlineMode();
         } else if (command == "offline_mode") {
-            processOfflineMode(); // Аналогичная реализация для offline режима
+            processOfflineMode();
         } else if (command == "exit") {
             break;
         } else {

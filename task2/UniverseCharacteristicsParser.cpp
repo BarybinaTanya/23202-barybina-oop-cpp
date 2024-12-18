@@ -9,7 +9,7 @@ void parseWindowSize(const std::string& windowSizeLine, int& width, int& height,
     if (iss >> extra) {
         config.setFileError(INVALID_WINDOW_SIZE_FORMAT);
     }
-    if (width <= 0 || height <= 0) {
+    if (width == 0 || height == 0) {
         config.setFileError(WINDOW_SIZE_MUST_BE_POSITIVE);
     }
 }

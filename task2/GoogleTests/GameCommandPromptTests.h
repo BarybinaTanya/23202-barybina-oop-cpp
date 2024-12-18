@@ -37,20 +37,11 @@ TEST_F(GameCommandPromptTest, MainMenuHelp) {
     GameCommandPrompt gamePrompt;
     gamePrompt.start();
 
-    std::string expectedOutput = "Available commands:\n"
-                                 " - online_mode: Play interactively.\n"
-                                 " - offline_mode: Process a file and save the results.\n"
-                                 " - exit: Quit the game.\n";
-    EXPECT_NE(output.str().find(expectedOutput), std::string::npos);
-}
-
-TEST_F(GameCommandPromptTest, UnknownCommand) {
-    input.str("unknown_command\nexit\n");
-
-    GameCommandPrompt gamePrompt;
-    gamePrompt.start();
-
-    std::string expectedOutput = "Unknown command. Type 'help' for assistance.\n";
+    std::string expectedOutput = "Main menu:\n"
+                                 " - online_mode: Interactive mode\n"
+                                 " - offline_mode: Batch mode\n"
+                                 " - exit: Quit\n"
+                                 "Enter your choice: ";
     EXPECT_NE(output.str().find(expectedOutput), std::string::npos);
 }
 

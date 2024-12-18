@@ -25,6 +25,7 @@ public:
             for (size_t x = 0; x < gameState.getWidth(); ++x) {
                 std::cout << (gameState.getMatrixProxy().at(x, y) ? "O" : ".") << " ";
             }
+            std::cout << '\n';
         }
     }
 };
